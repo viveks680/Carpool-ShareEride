@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!--Import Google Icon Font-->
+	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<!--Import materialize.css-->
+	<link type="text/css" rel="stylesheet" href="materialize\css\materialize.min.css"  media="screen,projection"/>
+
+	<!--Let browser know website is optimized for mobile-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+	<style type="text/css">
+		.no-padding{padding: 0 !important;}
+		.no-margin{margin: 0 !important;}
+		.googleMap{
+			height: 100vh;
+			z-index: 1;
+		}
+		.button-collapse{
+			display: block !important;
+		}
+		.nav-wrapper{
+			position: absolute;
+			z-index: 99999;
+		}
+		.page-footer{
+			position: absolute;
+			z-index: 9999;
+			width: 100%;
+			bottom: 0;
+			min-height: 5rem;
+			max-height: 10rem;
+		}
+
+	</style>
+</head>
+
+<body class="no-margin">
+	
+	<!-- **************Side Nav**************-->
+	<div class="nav-wrapper">
+		<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons light-blue-text text-darken-4 medium">menu</i></a>
+		<ul class="side-nav" id="mobile-demo">
+			<li id="stop"><b><a class="light-blue-text text-darken-4">Stop Live Trackings</a></b></li>
+			
+			
+		</ul>
+	</div>
+
+	<div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4>Stop Tracking your ride ?</h4>
+      <p>You cant come to this page if you click YES</p>
+    </div>
+    <div class="modal-footer">
+      <a id="redirect" class=" modal-action waves-effect waves-green btn-flat">Yes</a>
+    </div>
+  </div>
+
+	<!-- *************Google Maps*************-->
+	
+
+
+<div id="map" class="googleMap no-margin"></div>
+
+
+	<!--****************Footer****************-->
+
+	<footer class="page-footer no-margin light-blue darken-4">
+		<div class="container">
+			<div class="row no-margin">
+				<div class="col l12 s12">
+					<p class="white-text no-margin">Call Person driving: </p>
+					<h5 id="name-no" class="no-margin"></h5>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="materialize\js\materialize.min.js"></script>
+	<script type="text/javascript" src="js\getURLVars.js"></script>
+	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCv77suvYJWqp4rbPZ99EiaBhNIvu2fLnA"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(".button-collapse").sideNav();
+		
+
+			$('#stop').click(function(){
+				$('.button-collapse').sideNav('hide');
+				$('#modal1').openModal();
+			});
+
+			$('#redirect').click(function(){      
+        		var loggedinuserid = getUrlVars()["loggedinuserid"];
+        		window.location.href = "main.html?loggedinuserid="+loggedinuserid;
+      		}); 
+
+      		var rideid = getUrlVars()['rideid'];
+			var content;
+        	var loggedinuserid = getUrlVars()["loggedinuserid"];
+        	var url = "http://sharerideus.000webhostapp.com/getdriverdetails.php?loggedinuserid="+loggedinuserid+"&rideid="+rideid;
+        	$.getJSON(url,function(result){
+        		
+        		var content = `
+        				<a href="tel:`+result.mobileno+`" class="white-text" >
+      						`+result.firstname+`&nbsp`+result.lastname+`
+      					
+      					</a>
+        			`;
+       				
+       				$(content).appendTo("#name-no");
+        	});
+		});
+
+
+		
+	</script>
+	
+
+<script type="text/javascript">
+/*
+	var rideid = getUrlVars()['rideid'];
+	var url = "http://sharerideus.000webhostapp.com/getlanglong.php?rideid="+rideid;
+  	$.getJSON(url, function(result){
+  		$.each(result, function(i, result){
+  			$('#lat').val(result.current_lang);
+  			$('#long').val(result.current_long);
+  		}); 
+  	});
+  	var d = new Date();
+  	var n = d.getMinutes();
+  	console.log(n);
+	var map;
+	var marker;
+	var lat =  parseFloat($('#lat').val());
+	var long = parseFloat($('#long').val())
+	var myLatLng = {lat: lat, lng: long};
+	function initMap() {
+		map = new google.maps.Map(document.getElementById('map'), {
+    		zoom: 4,
+    		center: myLatLng,
+    		mapTypeId: google.maps.MapTypeId.ROADMAP,
+			disableDefaultUI:true
+  		});
+	}
+
+	function marker_refresh(){
+		//marker.setMap(null);
+		map.setCenter(myLatLng);
+		marker = new google.maps.Marker({
+    		position: myLatLng,
+    		map: map,
+    		icon: {
+  				path: google.maps.SymbolPath.CIRCLE,
+  				scale: 5,
+  				strokeColor: '#01579b',
+  				strokeWeight: 15
+  			}
+  		});
+	}
+	initMap();
+	marker_refresh();
+	google.maps.event.addDomListener(window, 'load', initMap); */
+	var jsonlat;
+	var jsonlong;
+	var curr_lang;
+	var curr_long;
+	var myLatlng;
+	var marker; 
+	var map;
+	var rideid = getUrlVars()['rideid'];
+	var url = "http://sharerideus.000webhostapp.com/getlanglong.php?rideid="+rideid;
+	
+
+  	function get_langlong(callback){
+		jsonlong = "default";
+  		$.getJSON(url, function(result){
+  			console.log(result);
+  			jsonlong = result.current_long;
+  			jsonlang = result.current_lang;
+  			callback(jsonlong, jsonlang);
+  		});
+  	}
+
+  	get_langlong(function(long, lang){
+  		console.log(long);
+  		console.log(lang);
+  		myLatlng = {lat: lang, lng: long};
+  		console.log(myLatlng);
+  	});
+
+  	//console.log(jsonlat);
+  	//console.log(jsonlong);
+  	//var lat =  parseFloat(get_lang(function(lang)));
+  	console.log(myLatlng);
+	var long = parseFloat(curr_long);
+  	var d = new Date();
+  	var n = d.getMinutes();
+  	
+	//var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+	function marker_refresh(){
+		get_langlong(function(long, lang){
+  			console.log(long);
+  			console.log(lang);
+  			lang = parseFloat(lang);
+  			long = parseFloat(long);
+  			myLatlng = {lat: lang, lng: long};
+  			console.log(myLatlng);
+  			initMap();
+  			initMarker();
+  			
+  			setInterval(refreshMarker,60*1000*1.5);
+  		});
+
+		function initMap(){
+		console.log("initMap function called");
+		console.log(myLatlng);	
+		var mapOptions = {
+  			zoom: 20,
+  			mapTypeId: google.maps.MapTypeId.ROADMAP,
+  			center: myLatlng,
+  			disableDefaultUI: true
+		}
+			map = new google.maps.Map(document.getElementById("map"), mapOptions);
+			console.log("initMap function exit");
+		}
+
+		function initMarker(){
+			console.log("initMarker function called");
+			console.log(myLatlng);
+			marker = new google.maps.Marker({
+    		position: myLatlng,
+    		map: map,
+    		icon: {
+  				path: google.maps.SymbolPath.CIRCLE,
+  				scale: 5,
+  				strokeColor: '#01579b',
+  				strokeWeight: 15
+  			}
+		});
+			console.log("initMarker function exit");
+		}
+
+		function refreshMarker() {
+			marker.setMap(null);
+			console.log("refresh called");
+			
+  			get_langlong(function(long, lang){
+  				console.log(long);
+  				console.log(lang);
+  				lang = parseFloat(lang);
+  				long = parseFloat(long);
+  				myLatlng = {lat: lang, lng: long};
+  			});
+  			marker = new google.maps.Marker({
+    		position: myLatlng,
+    		map: map,
+    		icon: {
+  				path: google.maps.SymbolPath.CIRCLE,
+  				scale: 5,
+  				strokeColor: '#01579b',
+  				strokeWeight: 15
+  			}
+  			});
+  			map.setCenter(myLatlng);
+		}
+		
+}
+
+	
+	google.maps.event.addDomListener(window, 'load', marker_refresh);
+	//marker.setMap(map);
+</script>
+
+</body>
+
+</html>

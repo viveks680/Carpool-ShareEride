@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	  <style type="text/css">
+		html,
+		body {
+			height: 100%;
+		}
+		html {
+			display: table;
+			margin: auto;
+		}
+		body {
+			display: table-cell;
+			vertical-align: middle;
+		}
+		.margin {
+			margin: 0 !important;
+		}
+		.input-field input[type=text]:focus{
+			border-bottom: 1px solid #ffffff;
+			box-shadow: 0 1px 0 0 #ffffff;
+		}
+		input[type=text], input[type=password], input[type=email], input[type=url], input[type=time], input[type=date], input[type=datetime-local], input[type=tel], input[type=number], input[type=search], textarea.materialize-textarea {
+			width: 20.5rem;
+		}
+		.waves-effect.waves-cyan .waves-ripple {
+			background-color: rgba(0, 188, 212, 0.65);
+    	}
+
+	  </style>
+    </head>
+
+    <body class="light-blue darken-4">
+		<div class="row">
+			<div class="input-field">
+				<input placeholder="Enter Origin" class="white-text geocomplete" autocomplete="on" type="text" name="origin" id="origin"/>
+			</div>
+		</div>
+		<center>
+			<button class="btn waves-effect btn-flat white light-blue-text waves-cyan"  id ="changeVals"type="button" >
+				
+				<i class="material-icons">&#xE8D5;</i>
+			</button>
+		</center>
+		<div class="row">
+			<div class="input-field">
+				<input placeholder="Enter Destination" class="white-text geocomplete" autocomplete="on" type="text" name="destination" id="destination"/>
+			</div>
+		</div>
+		<div class="row">
+			<button class="btn waves-effect transparent btn-flat white-text waves-cyan col s4 offset-s8" id="find" name="action"><i class="material-icons right">&#xE8B6;</i>Find</button>
+		</div>
+		
+      <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="js/getURLVars.js"></script>
+      <script type="text/javascript" src="js/jquery-2.2.1.min.js"></script>
+      <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+
+	  <!-- <div class="map_canvas"></div>
+	  <script type="text/javscript">
+    </script>
+	<!-- <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
+	<script>
+		$(function(){
+			$(".geocomplete").geocomplete({
+				map: ".map_canvas"
+			});
+		});
+	</script> -->
+    <!-- <script src="js/jquery.geocomplete.js"></script> -->
+    <script src="js/logger.js"></script>
+	<!-- <script src="http://maps.googleapis.com/maps/api/js?libraries=places&amp;key=AIzaSyBVezTe-nSRU-Z0eEjWSudo8ofilSCZCKI"></script> -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <!-- <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCv77suvYJWqp4rbPZ99EiaBhNIvu2fLnA&callback=initMap">
+     </script> -->
+	 <script>
+		$(document).ready(function(){
+			$('#changeVals').click(function(){
+				var src = $('#origin').val();
+				var dest = $('#destination').val();
+				$('#origin').val(dest);
+				$('#destination').val(src);
+			});
+
+			$('#find').click(function(){
+
+				var origin = $('#origin').val();
+				var destination = $('#destination').val();
+				if(origin == "" || destination == ""){
+					Materialize.toast("You have left one or both fields empty", 2000, "rounded");
+				}
+				else{
+					var loggedinuserid = getUrlVars()["loggedinuserid"];
+					var url = "displayrides.html?origin="+origin+"&destination="+destination+"&loggedinuserid="+loggedinuserid;
+					window.location.href = url;
+				}
+			});
+
+
+		});
+	 </script>
+    </body>
+  </html>

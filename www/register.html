@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Signup / Registration</title>
+  <!-- CORE CSS-->
+  
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+
+
+  <script type="text/javascript" src="js/jquery-2.2.1.min.js"></script>
+  <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+
+
+<style type="text/css">
+html,
+body {
+    height: 100%;
+}
+html {
+    display: table;
+    margin: auto;
+}
+body {
+    display: table-cell;
+    vertical-align: middle;
+}
+.margin {
+  margin: 0 !important;
+}
+.input-field input[type=password]:focus {
+     border-bottom: 1px solid #01579b;
+     box-shadow: 0 1px 0 0 #01579b;
+}
+
+.input-field input[type=text]:focus {
+     border-bottom: 1px solid #01579b;
+     box-shadow: 0 1px 0 0 #01579b;
+}
+
+.input-field input[type=email]:focus {
+     border-bottom: 1px solid #01579b;
+     box-shadow: 0 1px 0 0 #01579b;
+}
+
+.input-field input[type=checkbox]:focus{
+  color: #01579b;
+}
+
+.input-field .prefix.active {
+  color: #01579b;
+}
+   
+.input-field label {
+  color: #01579b;
+}
+ 
+.input-field input[type=email]:focus + label {
+  color: #01579b;
+}
+.input-field input[type=password]:focus + label {
+  color: #01579b;
+}
+.input-field input[type=text]:focus + label {
+  color: #01579b;
+}
+    .bg-img{
+		background-image: url("Main_wallpaper.jpg");
+		background-repeat: no-repeat;
+		background-position: center;
+		
+   }
+</style>
+  <!--        AJAX  starts       -->
+    <script>
+      $(document).ready(function(){
+          $(document).on("click","#submit", function(){
+          var fname = $('#fname').val();
+          var lname = $('#lname').val();
+          var email = $('#email').val();
+          var password = $('#password').val();
+          var mobileno = $('#mobileno').val(); 
+          var passwordagain = $('#passwordagain').val();
+          var profile = $('#imagetext').val();
+          console.log(profile);
+          dataString = "&fname="+fname+"&lname="+lname+"&email="+email+"&password="+password+"&passwordagain="+passwordagain+"&imagetext="+profile+"&mobileno="+mobileno;
+          console.log(dataString);
+          $.ajax({
+            type: "POST",
+            url: "http://sharerideus.000webhostapp.com/register.php",
+            data: dataString,
+            crossDomain: true,
+            cache: false,
+            beforeSend: function(){Materialize.toast("Logging in",100);}
+          
+        }).done(function(msg){
+            console.log(msg);
+            Materialize.toast(msg);
+            if(msg == "Nothing is set"){
+              Materialize.toast(msg,rounded);
+            }
+            else if(msg == "please enter password correctly"){
+             Materialize.toast(msg,rounded); 
+            }
+            else if(msg == "registration successfully..!!"){
+              window.location.replace("login.html");
+            }
+        });
+      });
+    });
+    </script>
+    <script type="text/javascript">  
+      function loadImageFileAsURL(){
+        var filesSelected = document.getElementById("inputFileToLoad").files;
+        if (filesSelected.length > 0){
+          var fileToLoad = filesSelected[0];
+ 
+          var fileReader = new FileReader();
+ 
+          fileReader.onload = function(fileLoadedEvent) {
+            var textAreaFileContents = document.getElementById("imagetext");
+     
+            textAreaFileContents.innerHTML = fileLoadedEvent.target.result;
+          };
+        fileReader.readAsDataURL(fileToLoad);
+        }
+      }
+    </script>
+</head>
+<body class="bg-img">
+<body class="light-blue darken-4">
+
+
+  <div id="login-page" class="row">
+    <div class="col s12 z-depth-6 card-panel" style = "border-radius: 20px; width: 100%">
+
+        <div class="row">
+          <div class="col s12 center">
+            <img src="images/logo.png"alt="" class="responsive-img valign profile-image-login">
+            <p style = "margin: 0px" class="center login-form-text"><b><i>Few steps away from your ride..!!</i></b></p>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="mdi-social-person-outline prefix"></i>
+            <input id="fname" type="text" >
+            <label for="fname" class="center-align">First Name</label>
+          </div>
+          <div class="row margin">
+          <div class="input-field col s12">
+            <i class="mdi-social-person-outline prefix"></i>
+            <input id="lname" type="text" >
+            <label for="lname" class="center-align">Last Name</label>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="material-icons prefix">phone</i>
+            <input id="mobileno" type="number" >
+            <label for="mobileno" class="center-align">Mobile no</label>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="mdi-communication-email prefix"></i>
+            <input id="email" type="email" class="validate">
+            <label for="email" class="center-align">Email</label>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="mdi-action-lock-outline prefix"></i>
+            <input id="password" type="password" >
+            <label for="password">Password</label>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="mdi-action-lock-outline prefix"></i>
+            <input id="passwordagain" type="password">
+            <label for="passwordagain">Re-type password</label>
+          </div>
+        </div>
+        <!--<div class="row margin">
+          <div class="input-field col s12 file-field ">
+            <div class="btn light-blue darken-4">
+              <span>Profile Pic</span>
+              <input id="inputFileToLoad" onchange="loadImageFileAsURL();" type="file">
+            </div>
+          </div>
+        </div>-->
+        <div class="row">
+<table">
+
+  <tr>
+    <td>
+   <div class="input-field col s12">
+            <!--<a href="register.html" class="btn waves-effect waves-light col s12">Register Now</a> -->
+            <button class="btn waves-effect light-blue darken-4 waves-light col s12" id="submit" name="action">Register Now
+          </button>
+          
+          </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <div class="col s12">
+            <p class="margin center medium-small sign-up">Already have an account? <a href="login.html">Login</a></p>
+          </div>
+    </td>
+  </tr>
+</table>
+        </div>
+    </div>
+  </div>
+
+</center>
+
+<textarea id="imagetext" style="display:none;width:640;height:240" ></textarea>
+
+  <!-- ================================================
+    Scripts
+    ================================================ -->
+
+  <!-- jQuery Library -->
+ 
+  <!--materialize js-->
+</body>
+</body>
+</html>

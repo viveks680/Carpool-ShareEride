@@ -1,0 +1,117 @@
+<html>
+  <head>
+      <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+  <body class="light-blue darken-4">
+    <nav class="light-blue darken-4">
+      <ul id="slide-out" class="side-nav lighten-4 ">
+        <li class="black-text" id="find">Find rides</li>
+        <li class="black-text" id="offer">Offer rides</li>
+        <li class="black-text" id="offerride">Your offered rides</li>
+      </ul>
+      <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+      <div class="container">
+        <span class="right"><b>SHAR-e-RIDE</b></span>
+      </div>
+    </nav>        
+    <!--Import jQuery before materialize.js-->
+    <ul class=" light-blue darken-4" id="list"></ul>
+
+    <!--Import js-->
+    <script type="text/javascript" src="js/jquery-2.2.1.min.js"></script>
+    <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/getURLVars.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        var loggedinuserid = getUrlVars()["loggedinuserid"];
+        var url = "http://sharerideus.000webhostapp.com/yourbookedrides.php?loggedinuserid="+loggedinuserid;
+        $.getJSON(url,function(result){
+          console.log(result);
+          $.each(result, function(i, field){
+            var content = `
+            <li class="light-blue darken-4">
+            <div class="card small">
+                <div class="card-image waves-effect waves-block waves-light center">
+                  <img style="height: 100%; width: initial !important;" class="activator" src="`+field.imagetext+`">
+              </div>
+              <div class="card-content">
+                  <span class="card-title activator blue-text text-darken-4"><b>`+field.firstname+` `+field.lastname+`</b><i class="material-icons right">more_vert</i></span>
+                  <p>`+field.from+`-`+field.to+`</p>
+              </div>
+              <div class="card-reveal">
+                <span class="card-title blue-text text-darken-4">
+                <b>`+field.bookedseats+` of `+field.totalnoofseats+` seats booked</b><i class="material-icons right">close</i>
+                </span>
+                <div class="row">
+                  <div class="col s6">
+                      <p><i class="material-icons tiny light-blue-text text-darken-4">smartphone</i>&nbsp&nbsp&nbsp`+field.mobileno+`</p>
+                      <p><i class="material-icons tiny light-blue-text text-darken-4">access_time</i>&nbsp&nbsp&nbsp`+field.timetoleave+`</p>
+                      <p><i class="material-icons tiny light-blue-text text-darken-4">date_range</i>&nbsp&nbsp&nbsp`+field.date+`</p>
+                  </div>
+                  <div class="col s6" style="padding-top: 40px;">
+                      <button class="book-button btn waves-effect waves-cyan light-blue darken-4" type="submit" name="action" id="`+field.rideid+`">check&nbspstatus</button>
+                  </div>
+                </div>
+                <div class="row light-blue-text text-darken-4"><b>
+                  Description
+                </b><hr/>
+                  `+field.desc+`        
+                </div>
+              </div>
+            </div>
+            </li>`;
+            $(content).appendTo("#list");
+        });
+      });
+    });
+
+      $('.button-collapse').sideNav({
+        menuWidth: 200, // Default is 240
+        edge: 'left' // Choose the horizontal origin
+      });
+
+      $('#find').click(function(){
+        var loggedinuserid = getUrlVars()["loggedinuserid"];
+        window.location.href = "http://sharerideus.000webhostapp.com/findaride.html?loggedinuserid="+loggedinuserid;
+      });
+
+      $('#offer').click(function(){
+        var loggedinuserid = getUrlVars()["loggedinuserid"];
+        window.location.href = "offeraride.html?loggedinuserid="+loggedinuserid;
+      });
+
+      $('#offerride').click(function(){
+        var loggedinuserid = getUrlVars()["loggedinuserid"];
+        window.location.href = "offeredrides.html?loggedinuserid="+loggedinuserid;
+      });
+
+
+      $(document).on("click",".book-button",function(){
+        var id = this.id;   
+        var loggedinuserid = getUrlVars()['loggedinuserid'];
+        dataString = "rideid="+id;
+          $.ajax({
+            type: "GET",
+            url: "http://sharerideus.000webhostapp.com/checkStatus.php",
+            data: dataString,
+            crossDomain: true,
+            cache: false,
+            beforeSend: function(){}
+          }).done(function(msg){
+            console.log(msg);
+            if(msg == "START "){
+              dataString = "rideid="+id+"&loggedinuserid="+loggedinuserid;
+              window.location.href = "bookerMap.html?"+dataString;
+            } else {
+              Materialize.toast('The ride has not been started',10000, 'rounded')
+            }
+          });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,182 @@
+<html>
+	<head>
+		<!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+      
+      <script type="text/javascript" src="js/jquery-2.2.1.min.js"></script>
+      <script type="text/javascript" src="js/getURLVars.js"></script>
+      <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <style>
+		.noUi-connect {
+    		box-shadow: inset 0 0 3px rgba(51,51,51,0.45);
+    		-webkit-transition: background 450ms;
+    		transition: background 450ms;
+    		background: #01579b !important ;
+		}
+		.noUi-handle {
+    		border: 1px solid #01579b;
+    		border-radius: 3px;
+    		background: #01579b;
+    		cursor: default;
+    		box-shadow: inset 0 0 1px #01579b, inset 0 1px 7px #01579b, 0 3px 6px -3px #01579b;
+		}
+		.waves-effect.waves-cyan .waves-ripple {
+			background-color: rgba(0, 188, 212, 0.65);
+    	}
+
+    #toast-container {
+    min-width: 100%;
+    top: 10%; 
+    }	
+
+    .waves-effect.waves-blue .waves-ripple {
+      background-color: rgba(1, 87, 155, 0.65);
+    }
+     </style>
+
+    <script type="text/javascript">
+      var usrid;
+      var loggedinuserid = getUrlVars()["loggedinuserid"];
+   		$(document).ready(function(){
+   			var origin = getUrlVars()["origin"];
+   			var destination = getUrlVars()["destination"];
+    		var url = "http://sharerideus.000webhostapp.com/displayrides.php?origin="+origin+"&destination="+destination+"&loggedinuserid="+loggedinuserid;
+    		$.getJSON(url,function(result){
+    			console.log(result);
+          if(result == '10'){
+            $('#modal1').openModal();
+          }else{
+    			$.each(result, function(i, field){
+    				
+            console.log("inside each")
+            usrid = field.usrid;
+    				var content = `
+    				<li class="light-blue darken-4">
+    				<div class="card small">
+								<div class="card-image waves-effect waves-block waves-light center">
+					  			<img class="activator" style="height: 100%; width: initial !important;" src="`+field.imagetext+`">
+							</div>
+							<div class="card-content">
+					  			<span class="card-title activator blue-text text-darken-4"><b>`+field.firstname+` `+field.lastname+`</b><i class="material-icons right">more_vert</i></span>
+					  			<p>`+field.from+`-`+field.to+`</p>
+							</div>
+							<div class="card-reveal">
+								<span class="card-title blue-text text-darken-4">
+								<b>`+field.bookedseats+` of `+field.totalnoofseats+` seats booked</b><i class="material-icons right">close</i>
+								</span>
+								<div class="row">
+									<div class="col s6">
+											<p><i class="material-icons tiny light-blue-text text-darken-4">smartphone</i>&nbsp&nbsp&nbsp`+field.mobileno+`</p>
+											<p><i class="material-icons tiny light-blue-text text-darken-4">access_time</i>&nbsp&nbsp&nbsp`+field.timetoleave+`</p>
+											<p><i class="material-icons tiny light-blue-text text-darken-4">date_range</i>&nbsp&nbsp&nbsp`+field.date+`</p>
+									</div>
+									<div class="col s6" style="padding-top: 40px;">
+											<button class="book-button btn waves-effect waves-cyan light-blue darken-4" type="submit" name="action" id="`+field.rideid+`">Book</button>
+									</div>
+								</div>
+								<div class="row light-blue-text text-darken-4"><b>
+									Description
+								</b><hr/>
+									`+field.desc+`				
+								</div>
+							</div>
+						</div>
+    				</li>`;
+    				$(content).appendTo("#list"); 
+        
+       			});
+        }
+    		});
+		});
+
+
+    $(document).ready(function(){
+          $(document).on("click",".book-button", function(){
+          var rid = this.id;
+          dataString = "rideid="+rid+"&usrid="+usrid+"&loggedinuserid="+loggedinuserid;
+          console.log(dataString);
+          $.ajax({
+            type: "POST",
+            url: "http://sharerideus.000webhostapp.com/bookseat.php",
+            data: dataString,
+            crossDomain: true,
+            cache: false,
+            beforeSend: function(){$(".book-button").val('Booking...');}
+        }).done(function(msg){
+            Materialize.toast(msg, 100000, 'rounded',function(){
+              window.location.href = "yourbookedrides.html?loggedinuserid="+loggedinuserid ;
+            });
+        });
+      });
+    }); 
+
+
+    </script>	
+  
+	</head>
+	<body class="light-blue darken-4">
+		
+	    <nav class="light-blue darken-4">
+			<ul id="slide-out" class="side-nav lighten-4 ">
+        <li class="black-text" id="offer">Offer rides</li>
+        <li class="black-text" id="bookedride">Your Booked rides</li>
+        <li class="black-text" id="offeredride">Your Offered rides</li>
+			</ul>
+			<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+      <div class="container">
+        <span class="right"><b>SHAR-e-RIDE</b></span>
+      </div>
+		</nav>				
+		<!--Import jQuery before materialize.js-->
+		<ul class=" light-blue darken-4" id="list"></ul>
+		
+    <div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4>No rides found :(</h4>
+      <p>Try putting different location near same area</p>
+    </div>
+    <div class="modal-footer">
+      <div id="redirect" class=" modal-action  waves-effect waves-blue btn-flat">Okay</div>
+    </div>
+  </div>
+		
+		<script>
+		$('.button-collapse').sideNav({
+			menuWidth: 200, // Default is 240
+			edge: 'left' // Choose the horizontal origin
+		});
+
+    $(document).ready(function(){
+
+      $('#bookedride').click(function(){      
+        var loggedinuserid = getUrlVars()["loggedinuserid"];
+        window.location.href = "yourbookedrides.html?loggedinuserid="+loggedinuserid;
+      });
+
+      $('#offer').click(function(){      
+        var loggedinuserid = getUrlVars()["loggedinuserid"];
+        window.location.href = "offerrides.html?loggedinuserid="+loggedinuserid;
+      });
+
+      $('#offeredride').click(function(){      
+        var loggedinuserid = getUrlVars()["loggedinuserid"];
+        window.location.href = "offeredrides.html?loggedinuserid="+loggedinuserid;
+      });  
+
+      $('#redirect').click(function(){      
+        var loggedinuserid = getUrlVars()["loggedinuserid"];
+        window.location.href = "findaride.html?loggedinuserid="+loggedinuserid;
+      });  
+
+    });
+	
+		</script>
+
+		
+	</body>
+</html>

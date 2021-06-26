@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	  <style type="text/css">
+		html,
+		body {
+			height: 100%;
+		}
+		html {
+			display: table;
+			margin: auto;
+		}
+		body {
+			display: table-cell;
+			vertical-align: middle;
+		}
+		.margin {
+			margin: 0 !important;
+		}
+		.input-field input[type=text]:focus{
+			border-bottom: 1px solid #ffffff;
+			box-shadow: 0 1px 0 0 #fffffff;
+		}
+		.input-field input[type=time]:focus{
+			border-bottom: 1px solid #ffffff;
+			box-shadow: 0 1px 0 0 #fffffff;
+		}
+		.input-field input[type=date]:focus{
+			border-bottom: 1px solid #ffffff;
+			box-shadow: 0 1px 0 0 #fffffff;
+		}
+		input[type=text], input[type=password], input[type=email], input[type=url], input[type=time], input[type=date], input[type=datetime-local], input[type=tel], input[type=number], input[type=search], textarea.materialize-textarea {
+			width: 20.5rem;
+		}
+		.waves-effect.waves-cyan .waves-ripple {
+			background-color: rgba(0, 188, 212, 0.65);
+    	}
+
+	  </style>
+	  <!--        AJAX  starts       -->
+	  <script type="text/javascript" src="js/getURLVars.js"></script>
+      <script type="text/javascript" src="js/jquery-2.2.1.min.js"></script>
+      <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+      <script>
+ 
+      		
+  		</script>
+    <script>
+      $(document).ready(function(){
+          $(document).on("click","#submit", function(){
+          var origin = $('#origin').val();
+          var destination = $('#destination').val();
+          var leavetime = $('#leavetime').val();
+          var date = $('#date').val();
+          var bookseat = $('#bookseat').val();
+          var price = $('#price').val();
+          var desc = $('#desc').val();
+          var loggedinuserid = getUrlVars()["loggedinuserid"];
+          dataString = "origin="+origin+"&destination="+destination+"&leavetime="+leavetime+"&date="+date+"&loggedinuserid="+loggedinuserid+"&bookseat="+bookseat+"&price="+price+"&desc="+desc;
+          console.log(dataString);
+          $.ajax({
+            type: "POST",
+            url: "http://sharerideus.000webhostapp.com/offeraride.php",
+            data: dataString,
+            crossDomain: true,
+            cache: false,
+            beforeSend: function(){Materialize.toast("Registering",100);}
+          
+        }).done(function(msg){
+            console.log(msg);
+            if(msg == "Nothing is set"){
+              Materialize.toast(msg,rounded);
+            }
+            else if(msg == "Success"){
+              window.location.replace("main.html?loggedinuserid="+loggedinuserid);
+            }
+            else{
+            	console.log(msg);
+            }
+        });
+      });
+    });
+    </script> 
+    <!--        AJAX  ends       -->
+    </head>
+
+    <body class="light-blue darken-4">
+		
+			<div class="row">
+				<div class="input-field">
+					<input placeholder="Enter Origin" class="white-text " type="text" name="origin" id="origin"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field">
+					<input placeholder="Enter Destination" class="white-text"  type="text" name="destination" id="destination"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field">
+					<input placeholder="Enter No of seats" class="white-text " type="number" name="bookseat" id="bookseat"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field">
+					<input placeholder="Enter price" class="white-text " type="number" name="price" id="price"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col">
+					<input   type="time" name="leavetime" class="white-text" id="leavetime"/>
+					
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col">
+						<input id="date" type="date" class="white-text">
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field">
+					 <textarea id="desc" class="materialize-textarea white-text"></textarea>
+          				<label for="desc">Desciption about ride</label>
+				</div>
+			</div>
+			<div class="row">
+				<button id="submit" class="btn waves-effect white  light-blue-text waves-cyan col s4 offset-s8">Submit</button>
+			</div>
+	
+      <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+      <script type="text/javascript">
+      
+      </script>
+	  <!-- <div class="map_canvas"></div> -->
+	
+	<!-- <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> -->
+	<!-- <script>
+		$(function(){
+			$(".geocomplete").geocomplete({
+				map: ".map_canvas"
+			});
+		});
+	</script> -->
+    <!-- <script src="js/jquery.geocomplete.js"></script> -->
+    <script src="js/logger.js"></script>
+	<!-- <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script> -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <!-- <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCv77suvYJWqp4rbPZ99EiaBhNIvu2fLnA&callback=initMap">
+     </script> -->
+     <!-- <script src="js/jquery.geocomplete.js"></script> -->
+	 <!-- <script src="http://maps.googleapis.com/maps/api/js?libraries=places&amp;key=AIzaSyBVezTe-nSRU-Z0eEjWSudo8ofilSCZCKI"></script> -->
+    </body>
+  </html>

@@ -1,0 +1,84 @@
+ <!DOCTYPE html>
+  <html>
+    <head>
+      <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+      
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	  <style type="text/css">
+		html,
+		body {
+			height: 100%;
+		}
+		html {
+			display: table;
+			margin: auto;
+		}
+		body {
+			display: table-cell;
+			vertical-align: middle;
+			width: 300px;
+		}
+		.margin {
+			margin: 0 !important;
+		}
+	
+		</style>
+    </head>
+
+
+    <body class="light-blue darken-4">
+    	 <nav class="light-blue darken-4 top ">
+      <ul id="slide-out" class="side-nav lighten-4 ">  
+        <li class="black-text" id="offerride">Your offered rides</li>
+        <li class="black-text" id="bookedride">Your booked rides</li>
+      </ul>
+     <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+    </nav>    
+		<div class="row">
+			<a class="margin waves-effect waves-light btn-large light-blue-text  white col s12" id="offer">Offer a ride</a>
+		</div> 
+
+		<br><br><br>
+		<div class="row">
+			<p class="margin waves-effect waves-light btn-large light-blue-text white col s12" id="find">Find a ride</p>
+		</div>
+	
+      <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="js/getURLVars.js"></script>
+      <script type="text/javascript" src="js/jquery-2.2.1.min.js"></script>
+      <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+      <script type="text/javascript">
+      	var loggedinuserid = getUrlVars()["loggedinuserid"];
+      	$(document).ready(function(){
+      		$(document).on('click', '#find', function(){
+      			window.location.href = 'findaride.html?loggedinuserid='+loggedinuserid;
+      		});
+      		$(document).on('click', '#offer', function(){
+      			window.location.href = 'offeraride.html?loggedinuserid='+loggedinuserid;
+      		});
+
+      		
+      $('#offerride').click(function(){
+        var loggedinuserid = getUrlVars()["loggedinuserid"];
+        window.location.href = "offeredrides.html?loggedinuserid="+loggedinuserid;
+      });
+
+      $('#bookedride').click(function(){
+      	var loggedinuserid = getUrlVars()["loggedinuserid"];
+        window.location.href = "yourbookedrides.html?loggedinuserid="+loggedinuserid;
+      });
+      	});
+      </script>
+      <script type="text/javascript">
+		$(document).ready(function(){
+			$(".button-collapse").sideNav();
+		});
+	</script>
+	
+    </body>
+  </html>

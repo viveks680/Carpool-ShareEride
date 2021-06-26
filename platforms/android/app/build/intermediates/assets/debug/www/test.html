@@ -1,0 +1,48 @@
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+	  <!--Google maps API-->
+	   <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	   <meta charset="utf-8">
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	  <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+    </head>
+
+    <body class="cyan accent-1">
+      <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+	  <div id="map"></div>
+	   <script>
+			function initMap() {
+				var map = new google.maps.Map(document.getElementById('map'), {
+				zoom: 13,
+				center: {lat:19.192638 , lng: 72.846460}
+				});
+
+				var trafficLayer = new google.maps.TrafficLayer();
+				trafficLayer.setMap(map);
+			}
+
+		</script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCv77suvYJWqp4rbPZ99EiaBhNIvu2fLnA&callback=initMap&signed_in=false" async defer>
+    </script>
+    </body>
+  </html>
+  
+  

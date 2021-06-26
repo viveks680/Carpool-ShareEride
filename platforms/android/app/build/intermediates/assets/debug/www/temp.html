@@ -1,0 +1,121 @@
+<!--
+<!DOCTYPE html>
+<html>
+<head>
+
+	<!-- Compiled and minified CSS 
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+	<!-- Compiled and minified JavaScript 
+	
+
+	<script >
+	$(document).ready(function () {
+		
+	
+			$("#btnSubmit").click(function(){
+	     		var formData = new FormData($(this)[0]);
+	     		formData.append("file",$("#imagetext").html());
+	     		/*$.ajax({
+	        		type: 'POST',
+	        		url: 'http://',
+	        		data: formData,
+	         		success: function (data) {
+	           				alert(data);
+	         		},
+	      		});*/
+
+
+  			});
+  			function readFile() {
+			  if (this.files && this.files[0]) {
+			    var FR= new FileReader();
+			    FR.onload = function(e) {
+			    	console.log(e.target.result);
+			      	return e.target.result;
+			    };       
+			    FR.readAsDataURL( this.files[0] );
+			  }
+			}
+	});
+	</script>
+
+</head>
+<body>
+		<form id="myForm" method ="post" enctype="multipart/form-data">
+    First Name: <input type="text" name="fname" id="fname"> <br>
+    Last Name: <input type="text" name="lname" id="lname"> <br>
+    Email:  <input type="text" name="email" id="email"> <br>
+    Image: <input type="file" name="image" id="image"> <br>
+    <button type="button" name="btnSubmit" id="btnSubmit"> Submit </button>
+</form>
+	
+
+</body>
+</html> -->
+
+
+<!--
+<html>
+<body>
+ 
+    <p>Select a File to Load:</p>
+    <input id="inputFileToLoad" type="file" onchange="loadImageFileAsURL();" />
+     
+ 
+    <p>File Contents as DataURL:</p>
+    <textarea id="imagetext" style="width:640;height:240" ></textarea>
+ 
+<script type="text/javascript">
+ 
+function loadImageFileAsURL()
+{
+    var filesSelected = document.getElementById("inputFileToLoad").files;
+    if (filesSelected.length > 0)
+    {
+        var fileToLoad = filesSelected[0];
+ 
+        var fileReader = new FileReader();
+ 
+        fileReader.onload = function(fileLoadedEvent) 
+        {
+            var textAreaFileContents = document.getElementById("imagetext");
+     
+            textAreaFileContents.innerHTML = fileLoadedEvent.target.result;
+        };
+ 
+        fileReader.readAsDataURL(fileToLoad);
+    }
+}
+ 
+</script>
+ 
+</body>
+</html> -->
+
+
+
+<html>
+<body>
+	<input placeholder="Enter Leaving time"  autocomplete="on" type="time" name="leavetime" id="leavetime"/>
+	<button id="btnSubmit">Submit</button>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript">
+		$("#btnSubmit").click(function(){
+	     		var leavetime = $('#leavetime').val();
+					console.log(leavetime);
+					formData = "leavetime="+leavetime;
+	     		$.ajax({
+	        		type: 'POST',
+	        		url: 'http://localhost/SharEride/temp.php',
+	        		data: formData,
+	         		success: function (data) {
+	           				alert(data);
+	         		},
+	      		});
+	      	});
+		
+	</script>
+</body>
+</html>
